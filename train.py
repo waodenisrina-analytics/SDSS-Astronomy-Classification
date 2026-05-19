@@ -20,6 +20,21 @@ from xgboost import XGBClassifier
 
 df = pd.read_csv("star_classification.csv")
 
+# Variabel untuk di buang
+dropped = ['obj_ID', 'alpha', 'delta', 'run_ID', 'rerun_ID', 
+       'cam_col', 'field_ID', 'spec_obj_ID', 'redshift',
+       'plate', 'MJD', 'fiber_ID']
+
+# Pengambilan subset data
+df = df.drop(columns=dropped)
+
+mag_columns = ['u', 'g', 'r', 'i', 'z']
+df[mag_columns] = df[mag_columns].mask(df[mag_columns] < 0, np.nan)
+
+# Hapus nilai nan/anomali
+df = df.dropna()
+
+
 # =========================================================
 # FEATURE ENGINEERING
 # =========================================================
